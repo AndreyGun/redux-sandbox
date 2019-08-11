@@ -1,27 +1,29 @@
-import { createStore } from 'redux';
+import { createStore, bindActionCreators } from 'redux';
 import reducer from './reducer';
-import { inc, dec, rnd } from './actions';
+import * as actions from './actions';
 
 const store = createStore(reducer);
 const { dispatch } = store;
+
+const {inc, dec, rnd} =
+  bindActionCreators( actions, dispatch);
+
 // добавляем евенты
 document
   .getElementById('inc')
-  .addEventListener('click', () => {
-    dispatch(inc());
-});
+  .addEventListener('click', inc);
+
 document
   .getElementById('dec')
-  .addEventListener('click', () => {
-    dispatch(dec());
-});
+  .addEventListener('click', dec);
+
 document
   .getElementById('rnd')
   .addEventListener('click', () => {
     // payload типичное имя для дополнительных
     // параметров которые мы передаем с action
     const payload = Math.floor(Math.random()*10);
-    dispatch(rnd(payload));
+    rnd(payload)
 });
 const update = () => {
   document.getElementById('counter').innerHTML = store.getState();
