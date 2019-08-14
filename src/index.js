@@ -1,35 +1,44 @@
-import { createStore, bindActionCreators } from 'redux';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore} from 'redux';
+import { Provider } from 'react-redux';
+
+import App from './components/app';
 import reducer from './reducer';
-import * as actions from './actions';
+
 
 const store = createStore(reducer);
-const { dispatch } = store;
 
-const {inc, dec, rnd} =
-  bindActionCreators( actions, dispatch);
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'));
+
+
+
+// самописный аналог bindActionCreators
+// const bindActionCreator = (creator, dispatch) => (...args) => {
+//   dispatch(creator(...args));
+// }
 
 // добавляем евенты
-document
-  .getElementById('inc')
-  .addEventListener('click', inc);
+// document
+//   .getElementById('inc')
+//   .addEventListener('click', inc);
 
-document
-  .getElementById('dec')
-  .addEventListener('click', dec);
+// document
+//   .getElementById('dec')
+//   .addEventListener('click', dec);
 
-document
-  .getElementById('rnd')
-  .addEventListener('click', () => {
-    // payload типичное имя для дополнительных
-    // параметров которые мы передаем с action
-    const payload = Math.floor(Math.random()*10);
-    rnd(payload)
-});
-const update = () => {
-  document.getElementById('counter').innerHTML = store.getState();
-}
-store.subscribe(update);
-
+// document
+//   .getElementById('rnd')
+//   .addEventListener('click', () => {
+//     // payload типичное имя для дополнительных
+//     // параметров которые мы передаем с action
+//     const payload = Math.floor(Math.random()*10);
+//     rnd(payload)
+// });
 // store.subscribe( () => { 
 //   document.getElementById('counter').innerText = store.getState();
 //   console.log(store.getState())
